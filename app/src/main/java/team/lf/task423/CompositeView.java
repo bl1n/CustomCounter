@@ -7,7 +7,10 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
@@ -16,13 +19,15 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 public class CompositeView extends LinearLayout {
+    private static final String TAG = "CompositeView";
 
     private TextView mCurrentCountTV;
     private TextView mTotalCountTV;
     private int mCurrentTextColor;
     private int mHeight;
-    private int mCurrentCount;
-    private int mTotalCount;
+    private String mCurrentCount;
+    private String mTotalCount;
+    private int mTextColor;
 
 
     public CompositeView(Context context) {
@@ -36,41 +41,58 @@ public class CompositeView extends LinearLayout {
 
     private void init(Context context, AttributeSet attrs) {
         inflate(context, R.layout.composite_view, this);
-
-
-        TypedArray typedArray = context.getTheme().obtainStyledAttributes(R.styleable.CompositeView);
-        mCurrentCount = typedArray.getInt(R.styleable.CompositeView_count, 5);
-        setCurrentCountText(String.valueOf(mCurrentCount));
-        mTotalCount = typedArray.getInt(R.styleable.CompositeView_total, 10);
-//        setTotalCountText(mTotalCount);
         mCurrentCountTV = findViewById(R.id.currentCount);
         mTotalCountTV = findViewById(R.id.totalCount);
-        mCurrentTextColor = mCurrentCountTV.getCurrentTextColor();
+        TextView slash = findViewById(R.id.slash);
+
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CompositeView, 0, 0);
+
+        //changing total
+        mTotalCount = typedArray.getString(R.styleable.CompositeView_total);
+        if (!TextUtils.isEmpty(mTotalCount) && TextUtils.isDigitsOnly(mTotalCount)) {
+            if (Integer.parseInt(mTotalCount) >= 0) {
+                mTotalCountTV.setText(mTotalCount);
+            }
+        } else mTotalCountTV.setText("10");
+        setCurrentCountText("5");
+
+        //changing text color
+        mTextColor = typedArray.getColor(R.styleable.CompositeView_textColor, Color.BLACK);
+        slash.setTextColor(mTextColor);
+        mTotalCountTV.setTextColor(mTextColor);
+        mCurrentCountTV.setTextColor(mTextColor);
+
+
+        //changing text style
+        // TODO: 01.10.2019 finish text style
+        typedArray.getInt(R.styleable.CompositeView_textStyle, 0);
+        mTotalCountTV.setTypeface(null, Typeface.BOLD);
+        mTotalCountTV.setTypeface(null, Typeface.ITALIC);
+        mTotalCountTV.setTypeface(null, Typeface.BOLD_ITALIC);
+
+
+
+
 
     }
 
     private void setCurrentCountText(String currentCountText) {
-        if ((Integer.parseInt(currentCountText) <= mTotalCount) && (Integer.parseInt(currentCountText) >= 0))
+        if ((Integer.parseInt(currentCountText) <= Integer.parseInt(mTotalCount)) && (Integer.parseInt(currentCountText) >= 0))
             mCurrentCountTV.setText(currentCountText);
     }
 
-    private void setTotalCountText(int totalCountText) {
-        mTotalCountTV.setText(totalCountText);
-    }
 
     public void changeCount(Boolean reverse) {
         final int currentValue = Integer.parseInt((String) mCurrentCountTV.getText());
         final int nextValue = reverse ? currentValue - 1 : currentValue + 1;
 
         mHeight = mCurrentCountTV.getHeight();
-        mHeight = reverse? -mHeight: mHeight;
+        mHeight = reverse ? -mHeight : mHeight;
 
-        ObjectAnimator fadeToTransparent = ObjectAnimator.ofArgb(mCurrentCountTV, "textColor", mCurrentTextColor, Color.TRANSPARENT);
-        ObjectAnimator fadeFromTransparent = ObjectAnimator.ofArgb(mCurrentCountTV, "textColor", Color.TRANSPARENT, mCurrentTextColor);
+        ObjectAnimator fadeToTransparent = ObjectAnimator.ofArgb(mCurrentCountTV, "textColor", mTextColor, Color.TRANSPARENT);
+        ObjectAnimator fadeFromTransparent = ObjectAnimator.ofArgb(mCurrentCountTV, "textColor", Color.TRANSPARENT, mTextColor);
         AnimatorSet tcAnim = new AnimatorSet();
         tcAnim.playSequentially(fadeToTransparent, fadeFromTransparent);
-
-
 
         ObjectAnimator oldTextMove = ObjectAnimator.ofFloat(mCurrentCountTV, View.Y, 0, mHeight / 2);
         ObjectAnimator newTextMove = ObjectAnimator.ofFloat(mCurrentCountTV, View.Y, -mHeight / 2, 0);

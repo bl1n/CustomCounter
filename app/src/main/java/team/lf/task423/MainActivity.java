@@ -16,12 +16,8 @@ public class MainActivity extends AppCompatActivity {
         mCompositeView = findViewById(R.id.comp_view);
 
 
-        findViewById(R.id.add).setOnClickListener(v->{
-            mCompositeView.changeCount(false);
-        });
-        findViewById(R.id.sub).setOnClickListener(v->{
-            mCompositeView.changeCount(true);
-        });
+        findViewById(R.id.add).setOnClickListener(v-> mCompositeView.changeCount(false));
+        findViewById(R.id.sub).setOnClickListener(v-> mCompositeView.changeCount(true));
 
     }
 }
