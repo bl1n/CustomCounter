@@ -60,6 +60,8 @@ public class CompositeView extends LinearLayout {
 
     public void changeCount(Boolean reverse) {
         final int currentValue = Integer.parseInt((String) mCurrentCountTV.getText());
+        final int nextValue = reverse ? currentValue - 1 : currentValue + 1;
+
         mHeight = mCurrentCountTV.getHeight();
         mHeight = reverse? -mHeight: mHeight;
 
@@ -82,7 +84,6 @@ public class CompositeView extends LinearLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                int nextValue = reverse ? currentValue - 1 : currentValue + 1;
                 setCurrentCountText(String.valueOf(nextValue));
             }
         });
