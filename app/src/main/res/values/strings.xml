@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Task423</string>
+    <string name="add_btn">+</string>
+    <string name="sub_btn">-</string>
+    <string name="default_total">10</string>
+
 </resources>

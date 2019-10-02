@@ -11,7 +11,7 @@
         android:layout_width="75dp"
         android:layout_height="45dp"
         android:layout_marginStart="96dp"
-        android:text="+"
+        android:text="@string/add_btn"
         app:layout_constraintBottom_toTopOf="@+id/comp_view"
         app:layout_constraintEnd_toEndOf="@+id/comp_view"
         app:layout_constraintHorizontal_bias="1.0"
@@ -22,7 +22,7 @@
         android:layout_width="75dp"
         android:layout_height="45dp"
         android:layout_marginStart="96dp"
-        android:text="-"
+        android:text="@string/sub_btn"
         app:layout_constraintEnd_toEndOf="@+id/comp_view"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/comp_view"
@@ -37,7 +37,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:total="10"
-        app:textColor="@color/colorPrimary"
-        app:textStyle="bold"/>
+        app:textColor="@color/colorAccent"
+        app:textStyle="bold_italic"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

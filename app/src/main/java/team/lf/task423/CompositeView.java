@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -28,6 +29,7 @@ public class CompositeView extends LinearLayout {
     private String mCurrentCount;
     private String mTotalCount;
     private int mTextColor;
+    private TextView mSlashTV;
 
 
     public CompositeView(Context context) {
@@ -43,7 +45,7 @@ public class CompositeView extends LinearLayout {
         inflate(context, R.layout.composite_view, this);
         mCurrentCountTV = findViewById(R.id.currentCount);
         mTotalCountTV = findViewById(R.id.totalCount);
-        TextView slash = findViewById(R.id.slash);
+        mSlashTV = findViewById(R.id.slash);
 
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CompositeView, 0, 0);
 
@@ -58,22 +60,21 @@ public class CompositeView extends LinearLayout {
 
         //changing text color
         mTextColor = typedArray.getColor(R.styleable.CompositeView_textColor, Color.BLACK);
-        slash.setTextColor(mTextColor);
+        mSlashTV.setTextColor(mTextColor);
         mTotalCountTV.setTextColor(mTextColor);
         mCurrentCountTV.setTextColor(mTextColor);
 
 
         //changing text style
-        // TODO: 01.10.2019 finish text style
-        typedArray.getInt(R.styleable.CompositeView_textStyle, 0);
-        mTotalCountTV.setTypeface(null, Typeface.BOLD);
-        mTotalCountTV.setTypeface(null, Typeface.ITALIC);
-        mTotalCountTV.setTypeface(null, Typeface.BOLD_ITALIC);
+        int typeFace = typedArray.getInt(R.styleable.CompositeView_textStyle, 0);
+        setTypeFace(typeFace);
 
+    }
 
-
-
-
+    private void setTypeFace(int typeFace){
+        mTotalCountTV.setTypeface(null, typeFace);
+        mCurrentCountTV.setTypeface(null, typeFace);
+        mSlashTV.setTypeface(null, typeFace);
     }
 
     private void setCurrentCountText(String currentCountText) {

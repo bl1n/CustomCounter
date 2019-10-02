@@ -3,6 +3,7 @@ package team.lf.task423;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mCompositeView = findViewById(R.id.comp_view);
-
 
         findViewById(R.id.add).setOnClickListener(v-> mCompositeView.changeCount(false));
         findViewById(R.id.sub).setOnClickListener(v-> mCompositeView.changeCount(true));
